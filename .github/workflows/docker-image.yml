@@ -49,5 +49,5 @@ jobs:
         run: docker login -u ${{secrets.DOCKER_HUB_USERNAME}} -p ${{secrets.DOCKER_HUB_ACCESS_TOKEN}}
 
       - name: Publish image
-        run: docker push "gb64/${REPOSITORY_NAME_LC}/${REPOSITORY_NAME}"
+        run: docker push "gb64/${REPOSITORY_NAME_LC}/${REPOSITORY_NAME}:${GITHUB_SHA::8}"
 
