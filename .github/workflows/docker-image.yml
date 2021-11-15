@@ -1,15 +1,16 @@
-name: Docker Image CI
+name: Build Docker Image
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - 'main'
   pull_request:
-    branches: [ main ]
+    branches:
+      - '*'
 
 jobs:
 
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -18,6 +19,7 @@ jobs:
     - name: set global env
       id: global_env
       run: |
+        echo "::set-output name=REPOSITORY_OWNER_LC::${GITHUB_REPOSITORY_OWNER,,}"
         echo "::set-output name=REPOSITORY_NAME::${GITHUB_REPOSITORY#*/}"
         echo "::set-output name=DOCKERHUB_IMAGE_NAME::gb64/${GITHUB_REPOSITORY_OWNER,,}/${GITHUB_REPOSITORY#*/}"
         echo "::set-output name=COMMIT_HASH::${GITHUB_SHA::8}"
@@ -34,3 +36,17 @@ jobs:
 
     - name: Build the Docker image
       run: docker build -t "${{ steps.global_env.outputs.DOCKERHUB_IMAGE_NAME }}:latest" -t "${{ steps.global_env.outputs.DOCKERHUB_IMAGE_NAME }}:${GITHUB_SHA::8}" .
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Docker login
+        run: docker login gb64 -u ${{secrets.DOCKER_HUB_USERNAME}} -p ${{secrets.DOCKER_HUB_PASSWORD}}
+
+      - name: Publish image
+        env:
+          IMAGE_NAME: $GITHUB_REPOSITORY
+        run: docker push "gb64/REPOSITORY_OWNER_LC/${{ steps.global_env.outputs.REPOSITORY_NAME }}"
+
