@@ -9,7 +9,7 @@ on:
       - '*'
 
 env:
-  REPOSITORY_OWNER_LC: "${{ env.GITHUB_REPOSITORY_OWNER,, }}"
+  REPOSITORY_OWNER_LC: "${GITHUB_REPOSITORY_OWNER,,}"
 
 jobs:
 
