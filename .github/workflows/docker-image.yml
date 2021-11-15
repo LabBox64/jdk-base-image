@@ -43,7 +43,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Docker login
-        run: docker login gb64 -u ${{secrets.DOCKER_HUB_USERNAME}} -p ${{secrets.DOCKER_HUB_PASSWORD}}
+        run: docker login -u ${{secrets.DOCKER_HUB_USERNAME}} -p ${{secrets.DOCKER_HUB_ACCESS_TOKEN}}
 
       - name: Publish image
         env:
