@@ -44,10 +44,11 @@ jobs:
         run: |
           echo "REPOSITORY_NAME_LC=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
           echo "REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
+          echo "COMMIT_HASH=${GITHUB_SHA::8}" >> $GITHUB_ENV
 
       - name: Docker login
         run: docker login -u ${{secrets.DOCKER_HUB_USERNAME}} -p ${{secrets.DOCKER_HUB_ACCESS_TOKEN}}
 
       - name: Publish image
-        run: docker push "gb64/${REPOSITORY_NAME_LC}/${REPOSITORY_NAME}:${GITHUB_SHA::8}"
+        run: docker push "gb64/${REPOSITORY_NAME_LC}/${REPOSITORY_NAME}:${COMMIT_HASH}"
 
