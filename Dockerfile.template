@@ -1,0 +1,10 @@
+FROM ${IMAGE_NAME}
+RUN apt update && \
+    apt -y --no-install-recommends --no-install-suggests install libjemalloc2 curl && \
+    apt clean && rm -rf /var/lib/apt/lists/*
+ENV LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
+LABEL com.rbkmoney.${SERVICE_NAME}.parent=${BASE_IMAGE_NAME}  \
+    com.rbkmoney.${SERVICE_NAME}.parent_digest="${BASE_IMAGE_DIGEST}"  \
+    com.rbkmoney.${SERVICE_NAME}.branch=${BRANCH}  \
+    com.rbkmoney.${SERVICE_NAME}.commit_id=${COMMIT}  \
+    com.rbkmoney.${SERVICE_NAME}.commit_number=`git rev-list --count HEAD`
