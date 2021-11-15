@@ -18,6 +18,9 @@ jobs:
     - name: Render DockerFile template
       run: |
         sh ./render.sh
+      env:
+        COMMIT_HASH: ${GITHUB_SHA::8}
+        BRANCH: ${GITHUB_REF##*/}
 
     - name: set global env
       id: global_env
@@ -25,6 +28,6 @@ jobs:
         echo "::set-output name=REPOSITORY_OWNER_LC::${GITHUB_REPOSITORY_OWNER,,}"
         echo "::set-output name=IMAGE_NAME::${GITHUB_REPOSITORY#*/}"
         echo "::set-output name=DOCKERHUB_IMAGE_NAME::gb64/${GITHUB_REPOSITORY_OWNER,,}/${GITHUB_REPOSITORY#*/}"
-    
+
     - name: Build the Docker image
       run: docker build -t "${{ steps.global_env.outputs.DOCKERHUB_IMAGE_NAME }}:latest" -t "${{ steps.global_env.outputs.DOCKERHUB_IMAGE_NAME }}:${GITHUB_SHA::8}" .

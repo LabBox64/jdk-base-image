@@ -1,11 +1,11 @@
 #!/bin/bash
 
-imageName="openjdk:15-alpine"
+imageName="openjdk:15-slim"
 serviceName="service-java"
 
 render() {
 sedStr="
-  s!%%IMAGE_NAME%%!$imageName!g;
+  s!%%BASE_IMAGE_NAME%%!$imageName!g;
   s!%%SERVICE_NAME%%!$serviceName!g;
 "
 
