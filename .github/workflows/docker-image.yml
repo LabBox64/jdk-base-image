@@ -16,10 +16,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: set global env
+    - name: Init env
       id: global_env
       run: |
-        echo "::set-output name=REPOSITORY_OWNER_LC::${GITHUB_REPOSITORY_OWNER,,}"
         echo "::set-output name=REPOSITORY_NAME::${GITHUB_REPOSITORY#*/}"
         echo "::set-output name=DOCKERHUB_IMAGE_NAME::gb64/${GITHUB_REPOSITORY_OWNER,,}/${GITHUB_REPOSITORY#*/}"
         echo "::set-output name=COMMIT_HASH::${GITHUB_SHA::8}"
@@ -42,10 +41,15 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/main'
     steps:
+      - name: Init env
+        id: global_env
+        run: |
+          echo "::set-output name=REPOSITORY_NAME_LC::${GITHUB_REPOSITORY_OWNER,,}"
+          echo "::set-output name=REPOSITORY_NAME::${GITHUB_REPOSITORY#*/}"
+
       - name: Docker login
         run: docker login -u ${{secrets.DOCKER_HUB_USERNAME}} -p ${{secrets.DOCKER_HUB_ACCESS_TOKEN}}
 
       - name: Publish image
-        run: |
-          docker push "gb64/${GITHUB_REPOSITORY_OWNER,,}/${{ steps.global_env.outputs.REPOSITORY_NAME }}"
+        run: docker push "gb64/${REPOSITORY_NAME_LC}/${{ steps.global_env.outputs.REPOSITORY_NAME }}"
 
