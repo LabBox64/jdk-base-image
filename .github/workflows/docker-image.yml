@@ -16,7 +16,8 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Render DockerFile template
-      run: ./render.sh
+      run: |
+        sh ./render.sh
 
     - name: set global env
       id: global_env
