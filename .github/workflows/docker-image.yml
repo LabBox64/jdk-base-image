@@ -19,11 +19,10 @@ jobs:
     - name: Init env
       id: global_env
       run: |
-        echo "REPOSITORY_NAME_LC=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
+        echo "REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
         echo "DOCKERHUB_IMAGE_NAME=gb64/{GITHUB_REPOSITORY_OWNER,,}/${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
         echo "COMMIT_HASH=${GITHUB_SHA::8}" >> $GITHUB_ENV
         echo "BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-        echo "REPOSITORY_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
 
     - name: Render DockerFile template
       run: |
