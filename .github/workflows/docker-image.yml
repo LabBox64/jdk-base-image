@@ -19,9 +19,9 @@ jobs:
       run: |
         sh ./render.sh
       env:
-        COMMIT_HASH: ${{ GITHUB_SHA::8 }}
-        BRANCH: ${{ GITHUB_REF#refs/heads/ }}
-        REPOSITORY_NAME: ${{ GITHUB_REPOSITORY#*/ }}
+        COMMIT_HASH: ${GITHUB_SHA::8}
+        BRANCH: ${GITHUB_REF#refs/heads/}
+        REPOSITORY_NAME: ${GITHUB_REPOSITORY#*/}
 
     - name: set global env
       id: global_env
