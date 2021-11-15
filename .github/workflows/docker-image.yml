@@ -24,18 +24,17 @@ jobs:
         echo "COMMIT_HASH=${GITHUB_SHA::8}" >> $GITHUB_ENV
         echo "BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
         echo "REPOSITORY_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-        echo "::set-output name=REPOSITORY_NAME::${GITHUB_REPOSITORY#*/}"
 
     - name: Render DockerFile template
       run: |
         sh ./render.sh
       env:
-        COMMIT_HASH: ${{ steps.global_env.outputs.COMMIT_HASH }}
-        BRANCH: ${{ steps.global_env.outputs.BRANCH }}
-        REPOSITORY_NAME: ${{ steps.global_env.outputs.REPOSITORY_NAME }}
+        COMMIT_HASH: ${COMMIT_HASH}
+        BRANCH: ${BRANCH}
+        REPOSITORY_NAME: ${REPOSITORY_NAME}
 
     - name: Build the Docker image
-      run: docker build -t "${{ steps.global_env.outputs.DOCKERHUB_IMAGE_NAME }}:latest" -t "${{ steps.global_env.outputs.DOCKERHUB_IMAGE_NAME }}:${GITHUB_SHA::8}" .
+      run: docker build -t "${DOCKERHUB_IMAGE_NAME}:latest" -t "${DOCKERHUB_IMAGE_NAME}:${GITHUB_SHA::8}" .
 
   deploy:
     runs-on: ubuntu-latest
