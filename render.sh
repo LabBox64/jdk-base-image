@@ -7,6 +7,8 @@ render() {
 sedStr="
   s!%%BASE_IMAGE_NAME%%!$imageName!g;
   s!%%SERVICE_NAME%%!$serviceName!g;
+  s!%%BRANCH%%!$BRANCH!g;
+  s!%%COMMIT_HASH%%!$COMMIT_HASH!g;
 "
 
 sed -r "$sedStr" $1
