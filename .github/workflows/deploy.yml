@@ -41,5 +41,5 @@ jobs:
     - name: Publish image
       env:
         IMAGE_NAME: $GITHUB_REPOSITORY
-      run: docker push --all-tags "gb64/${REPOSITORY_NAME}:${GITHUB_SHA::8}"
+      run: docker push --all-tags "gb64/${REPOSITORY_NAME}"
 
